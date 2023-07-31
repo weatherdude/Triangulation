@@ -27,6 +27,7 @@ fig_height = monitor_size[1] * 0.75 / default_dpi
 print(fig_width)
 # Create the 3D plot
 fig = plt.figure(figsize=(fig_width, fig_height))
+fig.canvas.set_window_title("Object triangulation calculator")  # Set the window title
 ax = fig.add_subplot(221, projection='3d')
 ax2 = fig.add_subplot(222)
 # Function to update the plot based on the slider values
@@ -42,7 +43,7 @@ def update(val):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
-    ax.set_title('Object triangulation calculator')
+    # ax.set_title('Object triangulation calculator')
     triangle = [[(x0, y0, z0), (x1, y1, z1), (x2, y2, z2)]]
     ax.add_collection3d(Poly3DCollection(triangle, facecolors='cyan', linewidths=1, edgecolors='r', alpha=.25))
     ax.scatter([x0, x1, x2], [y0, y1, y2], [z0, z1, z2], color='r', s=50)
@@ -84,8 +85,8 @@ def update(val):
             beta_unc=beta1+beta1_unc_list[j]
             alpha3 = 180 - alpha_unc - alpha2
             b = math.sin(alpha2*math.pi/180) * c/math.sin(alpha3*math.pi/180) # horizontal distance Fisheye - Object
-            b1 = b/math.cos(beta_unc*math.pi/180) # distance Fisheye - object
-            dist_list.append(b1)
+            b1_unc = b/math.cos(beta_unc*math.pi/180) # distance Fisheye - object
+            dist_list.append(b1_unc)
     
     ax2.clear()
     ax2.hist(dist_list, density=False, bins=100)  # density=False would make counts
